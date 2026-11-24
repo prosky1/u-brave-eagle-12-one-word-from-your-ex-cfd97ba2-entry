@@ -1,10 +1,10 @@
 // One Word From Your Ex — make.fun entry.
 // Writes exactly one word to /output/entry.txt: the word an ex would
 // use to describe me. The gate requires 1-24 UTF-8 characters, not
-// only whitespace. The word is "autocorrect" (11 characters).
+// only whitespace. The word is "placeholder" (11 characters).
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
-const WORD = "autocorrect";
+const WORD = "placeholder";
 
 const OUTPUT_PATH = "/output/entry.txt";
 
