@@ -1,16 +1,25 @@
-import { mkdir, writeFile } from "node:fs/promises";
+// One Word From Your Ex — entry program.
+// Emits exactly one word: the word an ex would use. Nothing else.
+import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 
-const WORD = "Exhausting";
-const DEFAULT_TARGET = "/output/entry.txt";
+const ENTRY_WORD = "Lesson";
+const OUTPUT = process.env.OUTPUT_PATH ?? "/output/entry.txt";
 
-async function emit(): Promise<void> {
-  const target = process.env.OUTPUT_PATH ?? DEFAULT_TARGET;
-  await mkdir(dirname(target), { recursive: true });
-  await writeFile(target, WORD, { encoding: "utf8" });
+// The gate accepts one UTF-8 word of 1..24 characters and nothing else:
+// no spaces, no punctuation runs, no second token sneaking in.
+const SINGLE_WORD = /^[^\s]{1,24}$/u;
+
+function assertOneWord(word: string): void {
+  if (!SINGLE_WORD.test(word)) {
+    throw new Error(`entry must be exactly one word of 1-24 chars, got: ${JSON.stringify(word)}`);
+  }
 }
 
-emit().catch((err: unknown) => {
-  console.error(err);
-  process.exitCode = 1;
-});
+function main(): void {
+  assertOneWord(ENTRY_WORD);
+  mkdirSync(dirname(OUTPUT), { recursive: true });
+  writeFileSync(OUTPUT, ENTRY_WORD, "utf8");
+}
+
+main();
